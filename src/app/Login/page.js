@@ -51,6 +51,7 @@ export default function Login() {
                     className={`border rounded-md w-[416px] h-9 pl-3 ${error ? "border-red-500" : ""}`} />
                 {error && <p className="mt-1 text-red-500"> {error} </p>}
                 <input
+                    type="password"
                     placeholder="Password"
                     className="border rounded-md w-[416px] h-9 mt-4 mb-4 pl-3" />
                 <a

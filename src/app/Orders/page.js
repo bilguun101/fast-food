@@ -21,6 +21,10 @@ export default function Orders() {
 
     return (
         <div className="w-full h-screen flex">
+            {/* shady background */}
+            {isOpen && (
+                <div className="absolute inset-0 bg-black/30 z-1"></div>
+            )}
             {/* left side */}
             <div className="bg-white w-[14.24%] h-screen">
                 <div className="mt-9 flex justify-center items-center gap-3">
@@ -67,7 +71,7 @@ export default function Orders() {
                                 <div className="w-[13.67%] text-gray-600 font-medium pl-12"> Total </div>
                                 <div className="w-[18.19%] text-gray-600 font-medium pl-10"> Delivery address </div>
                                 <button
-                                    onClick={setIsOpen}
+                                    onClick={() => setIsOpen(true)}
                                     className="w-[13.67%] flex items-center pl-8 pr-8 justify-between h-full cursor-pointer hover:bg-gray-100 duration-100">
                                     <p className="text-gray-600 font-medium"> Delivery state </p>
                                     <UpDown />
@@ -82,11 +86,11 @@ export default function Orders() {
             </div>
             {/* pop-up 1 */}
             {isOpen &&
-                <div className="w-[364px] h-50 bg-blue-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-6 flex flex-col justify-between">
+                <div className="w-[364px] h-50 bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-6 flex flex-col justify-between z-2">
                     <div className="flex items-center justify-between">
                         <p className="font-medium text-[18px]"> Change delivery state </p>
                         <button
-                            onClick={setIsOpen()}
+                            onClick={() => setIsOpen(false)}
                             className="bg-gray-200 w-9 h-9 rounded-full flex justify-center items-center cursor-pointer"> <X /> </button>
                     </div>
                     <div className="flex justify-between items-center">

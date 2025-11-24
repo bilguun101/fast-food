@@ -7,7 +7,7 @@ const checkIfEmailIsCorrect = (string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(string);
 }
 
-export default function Login() {
+export default function SignUp() {
 
     const [getValues, setGetValues] = useState("");
     const [error, setError] = useState("");

@@ -1,6 +1,0 @@
-export const CategorySection = () => {
-    return
-    <>
-
-    </>
-}

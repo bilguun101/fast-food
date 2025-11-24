@@ -16,6 +16,9 @@ export default function Orders() {
     const handleOrdersButton = () => {
         router.push('/FoodMenu');
     }
+    const handleHomeButton = () => {
+        router.push('/');
+    }
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -28,7 +31,7 @@ export default function Orders() {
             {/* left side */}
             <div className="bg-white w-[14.24%] h-screen">
                 <div className="mt-9 flex justify-center items-center gap-3">
-                    <Logo />
+                    <button className="cursor-pointer" onClick={handleHomeButton}><Logo /></button>
                     <div>
                         <p className="text-[22px] font-semibold"> NomNom </p>
                         <p className="text-[14px] font-normal text-gray-500"> Swift delivery </p>
@@ -85,7 +88,8 @@ export default function Orders() {
                 </div>
             </div>
             {/* pop-up 1 */}
-            {isOpen &&
+            {
+                isOpen &&
                 <div className="w-[364px] h-50 bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-6 flex flex-col justify-between z-2">
                     <div className="flex items-center justify-between">
                         <p className="font-medium text-[18px]"> Change delivery state </p>
@@ -99,7 +103,8 @@ export default function Orders() {
                         <div className="w-[95px] h-9 flex justify-center items-center bg-gray-200 font-medium text-[16px] rounded-full cursor-pointer"> Cancelled </div>
                     </div>
                     <div className="w-[316px] h-9 bg-black text-white flex justify-center items-center rounded-full cursor-pointer"> Save </div>
-                </div>}
+                </div>
+            }
         </div >
     );
 }

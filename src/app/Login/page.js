@@ -9,7 +9,9 @@ const checkIfEmailIsCorrect = (string) => {
 
 export default function Login() {
 
-    const [getValues, setGetValues] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
     const [error, setError] = useState("");
 
     const router = useRouter();
@@ -26,16 +28,32 @@ export default function Login() {
         router.push("/SignUp");
     }
 
-    const handleChange = (e) => {
-        setGetValues(e.target.value);
-    }
-
-    const handleButton = () => {
-        if (getValues && !checkIfEmailIsCorrect(getValues)) {
+    const handleButton = async () => {
+        if (!email || !checkIfEmailIsCorrect(email)) {
             setError("Invalid email. Use a format like example@email.com.");
+            return;
         }
-        else {
+        try {
             setError("");
+
+            const res = await fetch("http://localhost:8000/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                setError(data.message || "Login failed");
+                return;
+            }
+            localStorage.setItem("token", data.token);
+
+            router.push("/");
+        } catch (err) {
+            console.error(err);
+            setError("An error occurred. Try again.");
         }
     }
 
@@ -49,14 +67,16 @@ export default function Login() {
                 <p className="text-[26px] font-semibold mb-1"> Log in </p>
                 <p className="text-[16px] font-normal text-gray-500 mb-6"> Log in to enjoy your favorite dishes. </p>
                 <input
-                    value={getValues}
-                    onChange={handleChange}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email address"
                     className={`border rounded-md w-[416px] h-9 pl-3 ${error ? "border-red-500" : ""}`} />
                 {error && <p className="mt-1 text-red-500"> {error} </p>}
                 <input
                     type="password"
                     placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="border rounded-md w-[416px] h-9 mt-4 mb-4 pl-3" />
                 <a
                     onClick={handleForgottenPassword}

@@ -18,6 +18,10 @@ export default function ForgottenPassword() {
         router.push("/Login");
     }
 
+    const handleSingUp = () => {
+        router.push("/SignUp");
+    }
+
     const handleChange = (e) => {
         setGetValues(e.target.value);
     }
@@ -51,12 +55,12 @@ export default function ForgottenPassword() {
                 {error && <p className="mt-1 text-red-500"> {error} </p>}
                 <button
                     onClick={handleButton}
-                    className={`w-[416px] h-9 rounded-md  text-[14px] font-medium text-white mt-6 duration-200 ${getValues.length > 0 ? "bg-black text-white cursor-pointer" : "bg-gray-300"}`}> Send link </button>
+                    className={`w-[416px] h-9 rounded-md text-[14px] font-medium text-white mt-6 duration-200 ${getValues.length > 0 ? "bg-black text-white cursor-pointer" : "bg-gray-300"}`}> Send link </button>
                 <div className="flex justify-center items-center gap-3 mt-6">
                     <p> Don&apos;t have an account? </p>
-                    <a
-                        href=""
-                        className="text-blue-600"> Sign up </a>
+                    <button
+                        onClick={handleSingUp}
+                        className="text-blue-600 cursor-pointer"> Sign up </button>
                 </div>
             </div>
             <div className="w-[856px] h-[904px] relative">

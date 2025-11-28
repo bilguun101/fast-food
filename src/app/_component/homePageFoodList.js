@@ -50,7 +50,7 @@ export const HomePageFoodList = ({ categoryId, categoryName }) => {
                             <img
                                 className="absolute w-full h-full object-cover rounded-xl"
                                 src="home-food-trial.png" />
-                            <Dialog open={isOpen} onOpenChange={setIsOpen} >
+                            <Dialog>
                                 <DialogTrigger asChild>
                                     <Button className="w-11 h-11 bg-white z-10 relative rounded-full flex justify-center items-center cursor-pointer hover:bg-gray-200 duration-200 mr-5 mb-5"> <RedAdd /> </Button>
                                 </DialogTrigger>

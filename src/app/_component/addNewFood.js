@@ -12,9 +12,15 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Add } from "../_icons/add";
 import { useState } from "react";
+import { File } from "../_icons/file";
+import Image from "next/image";
+const UPLOAD_PRESET = "fast-food";
+const CLOUD_NAME = "dfucbr8fk";
 
 export const AddNewFood = ({ categoryId, getData }) => {
-    const [isOpen, setIsOpen] = useState();
+
+    const [logoUrl, setLogoUrl] = useState("");
+    const [uploading, setUploading] = useState(false);
 
     const [nameValue, setNameValue] = useState("");
     const [priceValue, setPriceValue] = useState("");
@@ -39,19 +45,55 @@ export const AddNewFood = ({ categoryId, getData }) => {
                 foodName: nameValue,
                 price: Number(priceValue),
                 ingredients: ingredientsValue,
-                category: categoryId
+                category: categoryId,
+                image: logoUrl
             })
         });
         getData();
-        setIsOpen(false);
+        console.log(logoUrl)
     }
+    const uploadToCloudinary = async (file) => {
 
+        const formData = new FormData();
+
+        formData.append("file", file);
+        formData.append("upload_preset", UPLOAD_PRESET);
+
+        try {
+            const response = await fetch(
+                `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+                {
+                    method: "POST",
+                    body: formData,
+                }
+            );
+            const data = await response.json();
+            return data.secure_url;
+        } catch (error) {
+            console.error("Cloudinary upload failed:", error);
+        }
+    };
+
+    const handleLogoUpload = async (event) => {
+
+        const file = event.target.files[0];
+        if (!file) return;
+        setUploading(true);
+        try {
+            const url = await uploadToCloudinary(file);
+            setLogoUrl(url);
+        } catch (err) {
+            console.log("Failed to upload logo: " + err.message);
+        } finally {
+            setUploading(false);
+        }
+    };
 
     return (
         <>
             <div className="flex justify-center items-center w-[270px] h-[241px] rounded-xl border border-dashed border-red-500">
                 <div className="flex flex-col gap-6 justify-center items-center">
-                    <Dialog open={isOpen} onOpenChange={setIsOpen} >
+                    <Dialog>
                         <DialogTrigger asChild>
                             <Button className="w-9 h-9 bg-red-400 rounded-full flex justify-center items-center cursor-pointer hover:bg-red-500 duration-200"> <Add /> </Button>
                         </DialogTrigger>
@@ -90,7 +132,45 @@ export const AddNewFood = ({ categoryId, getData }) => {
                             </div>
                             <div>
                                 <Label className="mb-2"> Food image </Label>
-                                <div className="w-[412px] h-[138px] bg-blue-100 rounded-md border border-blue-400 border-dashed"></div>
+                                {/* image section */}
+                                <div className="w-[412px] h-[138px] bg-blue-100 rounded-md border border-blue-400 border-dashed flex justify-center items-center cursor-pointer">
+                                    {!logoUrl ?
+                                        <div>
+                                            <Label
+                                                className="w-full h-full flex justify-center items-center"
+                                                htmlFor="input-file">
+                                                <div className="flex flex-col justify-center items-center gap-2 cursor-pointer">
+                                                    <div className="w-8 h-8 bg-white rounded-full flex justify-center items-center cursor-pointer"> <File /> </div>
+                                                    <p className="font-semibold"> Choose a file or drag & drop it here </p>
+                                                </div>
+                                            </Label>
+                                            <input
+                                                id="input-file"
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleLogoUpload}
+                                                disabled={uploading}
+                                                className="hidden"
+                                            />
+                                        </div>
+                                        : <div>
+                                            {logoUrl && (
+                                                <div className="mt-4">
+                                                    <p className="text-green-600 font-semibold mb-2">Logo uploaded!</p>
+                                                    <div className="relative w-64 h-64">
+                                                        <Image
+                                                            src={logoUrl}
+                                                            alt="Uploaded logo"
+                                                            fill
+                                                            className="object-contain rounded border border-gray-300"
+                                                        />
+                                                    </div>
+                                                    <p className="mt-2 text-sm text-gray-600 break-all">{logoUrl}</p>
+                                                </div>
+                                            )}
+                                        </div>}
+                                    {uploading && <p className="text-blue-600">Uploading...</p>}
+                                </div>
                             </div>
                             <DialogFooter className="flex justify-end items-end">
                                 <Button

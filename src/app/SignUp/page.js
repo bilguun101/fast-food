@@ -18,12 +18,8 @@ export default function SignUp() {
         router.push("/");
     }
 
-    const handleForgottenPassword = () => {
-        router.push("/ForgottenPassword");
-    }
-
-    const handleSignUp = () => {
-        router.push("/SignUp");
+    const handleLogin = () => {
+        router.push("/Login");
     }
 
     const handleChange = (e) => {
@@ -46,29 +42,22 @@ export default function SignUp() {
                 <button
                     onClick={handleReturn}
                     className="w-9 h-9 border border-gray-300 rounded-md flex justify-center items-center cursor-pointer mb-6"> <LeftIcon /> </button>
-                <p className="text-[26px] font-semibold mb-1"> Log in </p>
-                <p className="text-[16px] font-normal text-gray-500 mb-6"> Log in to enjoy your favorite dishes. </p>
+                <p className="text-[26px] font-semibold mb-1"> Create your account </p>
+                <p className="text-[16px] font-normal text-gray-500 mb-6"> Sign up to explore your favorite dishes. </p>
                 <input
                     value={getValues}
                     onChange={handleChange}
                     placeholder="Enter your email address"
                     className={`border rounded-md w-[416px] h-9 pl-3 ${error ? "border-red-500" : ""}`} />
                 {error && <p className="mt-1 text-red-500"> {error} </p>}
-                <input
-                    type="password"
-                    placeholder="Password"
-                    className="border rounded-md w-[416px] h-9 mt-4 mb-4 pl-3" />
-                <a
-                    onClick={handleForgottenPassword}
-                    className="text-[14px] font-normal text-gray-900 underline cursor-pointer"> Forgot password ? </a>
                 <button
                     onClick={handleButton}
-                    className="w-[416px] h-9 rounded-md bg-gray-300 text-[14px] font-medium text-white cursor-pointer mt-4"> Let&apos;s Go </button>
+                    className={`w-[416px] h-9 rounded-md text-[14px] font-medium text-white mt-6 duration-200 ${getValues.length > 0 ? "bg-black text-white cursor-pointer" : "bg-gray-300"}`}> Let&apos;s go </button>
                 <div className="flex justify-center items-center gap-3 mt-6">
-                    <p> Don&apos;t have an account? </p>
+                    <p className="text-muted-foreground"> Already have an account? </p>
                     <button
-                        onClick={handleSignUp}
-                        className="text-blue-600 cursor-pointer"> Sign up </button>
+                        onClick={handleLogin}
+                        className="text-blue-600 cursor-pointer"> Log in </button>
                 </div>
             </div>
             <div className="w-[856px] h-[904px] relative">

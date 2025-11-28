@@ -20,7 +20,7 @@ export const FoodList = ({ categoryId, categoryName, items }) => {
         const data = await fetch(`http://localhost:8000/food/byCategory/${categoryId}`, options);
         const jsonData = await data.json();
         setFoods(jsonData);
-        console.log("foods", jsonData);
+        console.log("foodsasdfasdf", jsonData);
     }
 
     useEffect(() => {
@@ -40,7 +40,7 @@ export const FoodList = ({ categoryId, categoryName, items }) => {
                                 <div className="w-[238px] h-[139px] relative flex justify-end items-end">
                                     <img
                                         className="absolute w-full h-full object-cover rounded-xl z-0"
-                                        src="random-food.png"
+                                        src={food.image}
                                         alt="no image" />
                                     <EditFoodDialog
                                         foodName={food.foodName}

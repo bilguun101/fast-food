@@ -27,8 +27,6 @@ export const EditFoodDialog = ({ id, foodName, foodCategory, foodIngredients, fo
     const [ingredients, setIngredients] = useState(foodIngredients);
     const [price, setPrice] = useState(foodPrice);
 
-    const [isOpen, setIsOpen] = useState(false);
-
     const updateFoodInfo = async () => {
         const updatedFood = {
             foodName: name,
@@ -46,11 +44,23 @@ export const EditFoodDialog = ({ id, foodName, foodCategory, foodIngredients, fo
             body: JSON.stringify(updatedFood)
         });
         if (getData) getData();
-        setIsOpen(false);
+    }
+
+    const deleteFood = async () => {
+        const data = await fetch(`http://localhost:8000/food`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: id
+            })
+        });
+        getData();
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog>
             <DialogTrigger asChild>
                 <Button className="w-11 h-11 text-red-500 rounded-full z-10 relative m-5 flex justify-center items-center cursor-pointer"> <Edit /> </Button>
             </DialogTrigger>
@@ -71,8 +81,8 @@ export const EditFoodDialog = ({ id, foodName, foodCategory, foodIngredients, fo
                             <p className="text-muted-foreground"> Dish category </p>
                             {/* selection of the categories */}
                             <Select
-                                value={foodCategory}
-                                onChange={(e) => setCategory(e.target.value)}>
+                                value={category}
+                                onValueChange={(value) => setCategory(value)}>
                                 <SelectTrigger className="w-[288px]">
                                     <SelectValue placeholder="category" />
                                 </SelectTrigger>
@@ -99,12 +109,14 @@ export const EditFoodDialog = ({ id, foodName, foodCategory, foodIngredients, fo
                         </div>
                         <div className="flex justify-between items-start mt-3 mb-3">
                             <p className="text-muted-foreground"> Image </p>
-                            <input className="w-[288px] h-[116px] border rounded-md" />
+                            <div className="w-[288px] h-[116px] border rounded-md bg-blue-100 border-blue-400 border-dashed"></div>
                         </div>
                     </div>
                 </div>
                 <DialogFooter className="flex justify-between items-center">
-                    <button className="w-12 h-10 border border-[#EF444480] rounded-md flex justify-center items-center cursor-pointer hover:bg-red-200 duration-200"> <RedTrashCan /> </button>
+                    <button
+                        onClick={deleteFood}
+                        className="w-12 h-10 border border-[#EF444480] rounded-md flex justify-center items-center cursor-pointer hover:bg-red-200 duration-200"> <RedTrashCan /> </button>
                     <Button
                         onClick={updateFoodInfo}
                         className="cursor-pointer w-[126px] h-10"> Save changes </Button>

@@ -9,6 +9,8 @@ const checkIfEmailIsCorrect = (string) => {
 
 export default function Login() {
 
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -36,7 +38,7 @@ export default function Login() {
         try {
             setError("");
 
-            const res = await fetch("http://localhost:8000/auth/login", {
+            const res = await fetch(`${backendUrl}/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),

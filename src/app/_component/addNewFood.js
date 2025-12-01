@@ -19,6 +19,8 @@ const CLOUD_NAME = "dfucbr8fk";
 
 export const AddNewFood = ({ categoryId, getData }) => {
 
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
     const [logoUrl, setLogoUrl] = useState("");
     const [uploading, setUploading] = useState(false);
 
@@ -36,7 +38,7 @@ export const AddNewFood = ({ categoryId, getData }) => {
         if (ingredientsValue.trim() === "") {
             return;
         }
-        const data = await fetch(`http://localhost:8000/food`, {
+        const data = await fetch(`${backendUrl}/food`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -50,7 +52,6 @@ export const AddNewFood = ({ categoryId, getData }) => {
             })
         });
         getData();
-        console.log(logoUrl)
     }
     const uploadToCloudinary = async (file) => {
 
@@ -153,21 +154,15 @@ export const AddNewFood = ({ categoryId, getData }) => {
                                                 className="hidden"
                                             />
                                         </div>
-                                        : <div>
-                                            {logoUrl && (
-                                                <div className="mt-4">
-                                                    <p className="text-green-600 font-semibold mb-2">Logo uploaded!</p>
-                                                    <div className="relative w-64 h-64">
-                                                        <Image
-                                                            src={logoUrl}
-                                                            alt="Uploaded logo"
-                                                            fill
-                                                            className="object-contain rounded border border-gray-300"
-                                                        />
-                                                    </div>
-                                                    <p className="mt-2 text-sm text-gray-600 break-all">{logoUrl}</p>
-                                                </div>
-                                            )}
+                                        : <div className="w-full h-full">
+                                            <div className="relative w-full h-full">
+                                                <Image
+                                                    src={logoUrl}
+                                                    alt="Uploaded logo"
+                                                    fill
+                                                    className="rounded border border-gray-300 object-cover"
+                                                />
+                                            </div>
                                         </div>}
                                     {uploading && <p className="text-blue-600">Uploading...</p>}
                                 </div>

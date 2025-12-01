@@ -42,6 +42,8 @@ const options = {
 
 export default function Home() {
 
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
   const [categoryItems, setCategoryItems] = useState([]);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -53,7 +55,7 @@ export default function Home() {
   }
 
   const getCategoryData = async () => {
-    const data = await fetch(`http://localhost:8000/food-category`, options);
+    const data = await fetch(`${backendUrl}/food-category`, options);
     const jsonData = await data.json();
     setCategoryItems(jsonData);
     console.log("category", jsonData);

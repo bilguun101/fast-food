@@ -30,6 +30,8 @@ const options = {
 
 export default function FoodMenu() {
 
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
     const [isOpen, setIsOpen] = useState(false);
 
     const [values, setValues] = useState("");

@@ -14,10 +14,12 @@ const options = {
 
 export const FoodList = ({ categoryId, categoryName, items }) => {
 
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
     const [foods, setFoods] = useState([]);
 
     const getData = async () => {
-        const data = await fetch(`http://localhost:8000/food/byCategory/${categoryId}`, options);
+        const data = await fetch(`${backendUrl}/food/byCategory/${categoryId}`, options);
         const jsonData = await data.json();
         setFoods(jsonData);
         console.log("foodsasdfasdf", jsonData);

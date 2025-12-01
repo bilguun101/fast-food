@@ -19,13 +19,21 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import Image from "next/image";
+const UPLOAD_PRESET = "fast-food";
+const CLOUD_NAME = "dfucbr8fk";
 
 export const EditFoodDialog = ({ id, foodName, foodCategory, foodIngredients, foodPrice, getData, items }) => {
+
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
     const [name, setName] = useState(foodName);
     const [category, setCategory] = useState(foodCategory);
     const [ingredients, setIngredients] = useState(foodIngredients);
     const [price, setPrice] = useState(foodPrice);
+
+    const [logoUrl, setLogoUrl] = useState("");
+    const [uploading, setUploading] = useState(false);
 
     const updateFoodInfo = async () => {
         const updatedFood = {
@@ -36,7 +44,7 @@ export const EditFoodDialog = ({ id, foodName, foodCategory, foodIngredients, fo
             id: id
         };
 
-        await fetch(`http://localhost:8000/food`, {
+        await fetch(`${backendUrl}/food`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -47,7 +55,7 @@ export const EditFoodDialog = ({ id, foodName, foodCategory, foodIngredients, fo
     }
 
     const deleteFood = async () => {
-        const data = await fetch(`http://localhost:8000/food`, {
+        const data = await fetch(`${backendUrl}/food`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
@@ -57,6 +65,36 @@ export const EditFoodDialog = ({ id, foodName, foodCategory, foodIngredients, fo
             })
         });
         getData();
+    }
+
+    const uploadToCloudinary = async (file) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", UPLOAD_PRESET);
+        try {
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+                method: "POST",
+                body: formData,
+            });
+            const data = await response.json();
+            return data.secure_url;
+        } catch (error) {
+            console.error("Cloudinary upload failed:", error);
+        }
+    }
+
+    const handleLogoUpload = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        setUploading(true);
+        try {
+            const url = await uploadToCloudinary(file);
+            setLogoUrl(url);
+        } catch (err) {
+            console.log("Failed to upload logo: " + err.message);
+        } finally {
+            setUploading(false);
+        }
     }
 
     return (
@@ -109,7 +147,18 @@ export const EditFoodDialog = ({ id, foodName, foodCategory, foodIngredients, fo
                         </div>
                         <div className="flex justify-between items-start mt-3 mb-3">
                             <p className="text-muted-foreground"> Image </p>
-                            <div className="w-[288px] h-[116px] border rounded-md bg-blue-100 border-blue-400 border-dashed"></div>
+                            {/* image section */}
+                            <div className="w-[288px] h-[116px] border rounded-md bg-blue-100 border-blue-400 border-dashed">
+                                {!logoUrl ?
+                                    <div>
+
+                                    </div>
+                                    :
+                                    <div>
+                                        <p className="text-muted-foreground flex justify-center items-center">No image selected</p>
+                                    </div>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>

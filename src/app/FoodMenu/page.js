@@ -57,7 +57,7 @@ export default function FoodMenu() {
         if (values.length === 0) {
             return;
         }
-        const data = await fetch(`http://localhost:8000/food-category`, {
+        const data = await fetch(`${backendUrl}/food-category`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -72,7 +72,7 @@ export default function FoodMenu() {
 
 
     const getData = async () => {
-        const data = await fetch(`http://localhost:8000/food-category`, options);
+        const data = await fetch(`${backendUrl}/food-category`, options);
         const jsonData = await data.json();
         setItems(jsonData);
         console.log("category", jsonData);
